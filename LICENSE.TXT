@@ -64,6 +64,7 @@ Program             Directory
 Autoconf:           llvm-test/autoconf
 Benchmark:          llvm-test/libs/benchmark-1.1.0
 LCALS:              llvm-test/MicroBenchmarks/LCALS
+harris:             llvm-test/MicroBenchmarks/harris
 Burg:               llvm-test/MultiSource/Applications/Burg
 Aha:                llvm-test/MultiSource/Applications/aha
 SGEFA:              llvm-test/MultiSource/Applications/sgefa
@@ -123,3 +124,6 @@ SingleSource Tests: llvm-test/SingleSource/Benchmarks/Misc
                     llvm-test/SingleSource/Gizmos
                     llvm-test/SingleSource/Benchmarks/SmallPT
 zlib:               llvm-test/MultiSource/Applications/ClamAV/zlib_*
+Rodinia:            llvm-test/MultiSource/Benchmarks/Rodinia
+Rodinia:            llvm-test/MultiSource/Benchmarks/Rodinia
+Rodinia:            llvm-test/MultiSource/Benchmarks/Rodinia

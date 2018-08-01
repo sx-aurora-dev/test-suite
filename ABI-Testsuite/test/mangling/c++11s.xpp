@@ -5,7 +5,7 @@
 
 
 // References to declared entities
-// CHECK-DAG: _Z3fooc
+// CHECK-DAG: _Z3fooc{{$}}
 void foo(char) {}
 template <void (&)(char)> struct CB {};
 // CHECK-DAG: _Z3bar2CBIL_Z3foocEE
