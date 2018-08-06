@@ -723,7 +723,7 @@ LISP l_readdir(LISP v)
  if (!r) return(NIL);
 #if defined(sun) || defined(sgi) || defined(linux)
  namlen = safe_strlen(r->d_name,r->d_reclen);
-#elif defined(__CYGWIN__)
+#elif defined(__CYGWIN__) || defined(__ve__)
  namlen = strlen(r->d_name);
 #else
  namlen = r->d_namlen;
