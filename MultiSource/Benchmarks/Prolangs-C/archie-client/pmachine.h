@@ -8,6 +8,10 @@
  * v1.2.0 - 11/19/91 (mmt) - added MSDOS & OS2 stuff
  */
 
+#ifdef __ve__
+# define NOREGEX
+#endif
+
 #ifdef u3b2
 # define USG
 # define NOREGEX

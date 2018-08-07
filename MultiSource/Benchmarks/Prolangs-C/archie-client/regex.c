@@ -440,7 +440,7 @@ char *re_comp(char *pat)
 static char *bol;
 static char *bopat[MAXTAG];
 static char *eopat[MAXTAG];
-char *pmatch();
+static char *pmatch();
 
 /*
  * re_exec:

@@ -21,3 +21,9 @@ extern char *regex();
 extern char *re_comp();
 extern int re_exec();
 #endif
+#if defined(__ve__)
+/* Let them use ours if they wish.  */
+#define NOREGEX
+extern char *re_comp();
+extern int re_exec();
+#endif

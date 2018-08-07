@@ -47,7 +47,7 @@ int match (char *s1, char *s2)
 
 int font_id = 0; /* the default font */
 
-#ifdef SOLARIS
+#if defined(SOLARIS) || defined(__ve__)
 /* XZ: use regcmp() and regex() instead of re_comp() and re_exec() */
 /* PAS (6/3/96): use regcomp() and regexec() from regex.h instead of
 	re_comp() and re_exec() on the understanding that it only has to
