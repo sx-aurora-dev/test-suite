@@ -19,8 +19,10 @@ foreach(sourcebc ${uosources})
   string(REGEX REPLACE ".[cp]+$" "" pathbc ${sourcebc})
   string(REGEX REPLACE ".*/" "" namebc ${pathbc})
   string(REPLACE "." "" namebc ${namebc})
-  set(Source ${CMAKE_CURRENT_SOURCE_DIR}/${ARCH}_halide_runtime.bc ${CMAKE_CURRENT_SOURCE_DIR}/${ARCH}_tests/${namebc}.bc ${CMAKE_CURRENT_SOURCE_DIR}/${ARCH}_scalar_tests/scalar_${namebc}.bc)
-  set(PROG simd_ops_${namebc})
-  llvm_multisource(TARGET_VAR _target)
-  target_link_libraries(${_target} simd_ops)
+  llvm_multisource(simd_ops_${namebc}
+    ${CMAKE_CURRENT_SOURCE_DIR}/${ARCH}_halide_runtime.bc
+    ${CMAKE_CURRENT_SOURCE_DIR}/${ARCH}_tests/${namebc}.bc
+    ${CMAKE_CURRENT_SOURCE_DIR}/${ARCH}_scalar_tests/scalar_${namebc}.bc
+  )
+  target_link_libraries(simd_ops_${namebc} simd_ops)
 endforeach()
