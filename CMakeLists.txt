@@ -66,11 +66,13 @@ set(TEST_SUITE_REMOTE_CLIENT "ssh" CACHE STRING "Remote execution client")
 set(TEST_SUITE_REMOTE_HOST "" CACHE STRING "Remote execution host")
 mark_as_advanced(TEST_SUITE_REMOTE_CLIENT)
 
-add_custom_target(rsync
-  COMMAND ${PROJECT_SOURCE_DIR}/utils/rsync.sh
-              ${TEST_SUITE_REMOTE_HOST} ${PROJECT_BINARY_DIR}
-  USES_TERMINAL
-)
+if(TEST_SUITE_REMOTE_HOST)
+  add_custom_target(rsync
+    COMMAND ${PROJECT_SOURCE_DIR}/utils/rsync.sh
+                ${TEST_SUITE_REMOTE_HOST} ${PROJECT_BINARY_DIR}
+    USES_TERMINAL
+  )
+endif()
 
 # Run Under configuration for RunSafely.sh (will be set in lit.site.cfg)
 set(TEST_SUITE_RUN_UNDER "" CACHE STRING "RunSafely.sh run-under (-u) parameter")
@@ -130,6 +132,20 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${TEST_SUITE_DIAGNOSE_FLAGS}")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TEST_SUITE_DIAGNOSE_FLAGS}")
 set(CMAKE_EXE_LINKER_FLAGS
     "${CMAKE_EXE_LINKER_FLAGS} ${TEST_SUITE_DIAGNOSE_LINKER_FLAGS}")
+
+# Append extra flags. These extra flags are mainly meant for cache files that
+# want to apply flags that get not override even when the user manually
+# specifies CMAKE_C_FLAGS and similar.
+set(TEST_SUITE_EXTRA_C_FLAGS CACHE STRING "Extra flags for CMAKE_C_FLAGS")
+set(TEST_SUITE_EXTRA_CXX_FLAGS CACHE STRING "Extra flags for CMAKE_CXX_FLAGS")
+set(TEST_SUITE_EXTRA_EXE_LINKER_FLAGS CACHE STRING
+    "Extra flags for CMAKE_EXE_LINKER_FLAGS")
+mark_as_advanced(TEST_SUITE_EXTRA_C_FLAGS, TEST_SUITE_EXTRA_CXX_FLAGS,
+                 TEST_SUITE_EXTRA_EXE_LINKER_FLAGS)
+set(CMAKE_C_CFLAGS "${CMAKE_C_CFLAGS} ${TEST_SUITE_EXTRA_C_FLAGS}")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TEST_SUITE_EXTRA_CXX_FLAGS}")
+set(CMAKE_EXE_LINKER_FLAGS
+    "${CMAKE_EXE_LINKER_FLAGS} ${TEST_SUITE_EXTRA_EXE_LINKER_FLAGS}")
 
 include(TestSuite)
 include(SingleMultiSource)
