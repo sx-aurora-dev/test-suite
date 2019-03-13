@@ -9,7 +9,7 @@ else
 CPPFLAGS += -DHASHCODEBITS=23
 endif
 
-ifeq (,$(filter $(ARCH),PowerPC Mips))
+ifeq (,$(filter $(ARCH),PowerPC Mips VE))
 LDFLAGS = -lsupc++
 LIBS += -lsupc++
 endif
