@@ -150,10 +150,25 @@ set(TEST_SUITE_EXTRA_EXE_LINKER_FLAGS CACHE STRING
     "Extra flags for CMAKE_EXE_LINKER_FLAGS")
 mark_as_advanced(TEST_SUITE_EXTRA_C_FLAGS, TEST_SUITE_EXTRA_CXX_FLAGS,
                  TEST_SUITE_EXTRA_EXE_LINKER_FLAGS)
-set(CMAKE_C_CFLAGS "${CMAKE_C_CFLAGS} ${TEST_SUITE_EXTRA_C_FLAGS}")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${TEST_SUITE_EXTRA_C_FLAGS}")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TEST_SUITE_EXTRA_CXX_FLAGS}")
 set(CMAKE_EXE_LINKER_FLAGS
     "${CMAKE_EXE_LINKER_FLAGS} ${TEST_SUITE_EXTRA_EXE_LINKER_FLAGS}")
+
+# This is either directly the C++ ABI library or the full C++ library
+# which pulls in the ABI transitively.
+set(TEST_SUITE_CXX_ABI "default" CACHE STRING "Specify C++ ABI library to use.")
+set(CXXABIS "none default libstdc++ libsupc++ libc++ libc++abi")
+set_property(CACHE TEST_SUITE_CXX_ABI PROPERTY STRINGS "${CXXABIS}")
+if (TEST_SUITE_CXX_ABI STREQUAL "default")
+  if (APPLE OR CMAKE_SYSTEM_NAME MATCHES "FreeBSD|Fuchsia")
+    set(TEST_SUITE_CXX_ABI_LIBNAME "c++abi")
+  else()
+    set(TEST_SUITE_CXX_ABI_LIBNAME "supc++")
+  endif()
+else()
+  STRING(REGEX REPLACE "^lib" "" TEST_SUITE_CXX_ABI_LIBNAME ${TEST_SUITE_CXX_ABI})
+endif()
 
 include(TestSuite)
 include(SingleMultiSource)
