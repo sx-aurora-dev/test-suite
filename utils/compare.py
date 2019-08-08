@@ -32,10 +32,10 @@ def read_lit_json(filename):
         if name in names:
             sys.stderr.write("Error: Multiple tests with name '%s'\n" % name)
             sys.exit(1)
-        names.add(name)
         if "metrics" not in test:
-            print("Warning: '%s' has No metrics!" % test['name'])
+            print("Warning: '%s' has no metrics, skipping!" % test['name'])
             continue
+        names.add(name)
         for name in test["metrics"].keys():
             if name not in columnindexes:
                 columnindexes[name] = len(columns)
@@ -50,15 +50,16 @@ def read_lit_json(filename):
     data = []
     testnames = []
     for test in jsondata['tests']:
+        if "metrics" not in test:
+            continue
         name = test['name']
         if 'shortname' in test:
             name = test['shortname']
         testnames.append(name)
 
         datarow = [nan] * len(columns)
-        if "metrics" in test:
-            for (metricname, value) in test['metrics'].items():
-                datarow[columnindexes[metricname]] = value
+        for (metricname, value) in test['metrics'].items():
+            datarow[columnindexes[metricname]] = value
         for (name, value) in test.items():
             index = columnindexes.get(name)
             if index is not None:
@@ -140,8 +141,8 @@ def add_geomean_row(data, dataout):
 
     gm_row = {c: '' for c in dataout.columns}
     gm_row['diff'] = gm_diff
-    gm_row['Program'] = 'Geomean difference'
-    return dataout.append(gm_row, ignore_index=True)
+    series = pd.Series(gm_row, name='Geomean difference')
+    return dataout.append(series)
 
 def filter_failed(data, key='Exec'):
     return data.loc[data[key] == "pass"]
@@ -219,11 +220,11 @@ def print_result(d, limit_output=True, shorten_names=True,
         # Take 15 topmost elements
         dataout = dataout.head(15)
 
+    if show_diff_column:
+      dataout = add_geomean_row(d, dataout)
+
     # Turn index into a column so we can format it...
     dataout.insert(0, 'Program', dataout.index)
-
-    if show_diff_column:
-        dataout = add_geomean_row(d, dataout)
 
     formatters = dict()
     formatters['diff'] = format_diff
