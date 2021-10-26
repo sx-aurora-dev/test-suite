@@ -1,3 +1,10 @@
+Archived Peojct
+===============
+
+This is obsoleted and archived project.  Please refer current llvm test suite
+repo for VE (https://github.com/sx-aurora-dev/llvm-test-suite) for the latest
+information.
+
 LLVM "test-suite" Repository
 ----------------------------
 
